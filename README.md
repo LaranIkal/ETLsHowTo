@@ -17,3 +17,5 @@ For databases I will be using SQLite with R package RSQLite(https://cran.r-proje
 and Apache Derby(https://db.apache.org/derby/) with JDBC driver to show two different databases and two different methods to access a database.
 Although Apache Derby allows to have a client/server mode (which I have used for concurrency), I will only use the embeded driver here.
 
+Here a link to download JDBC drivers for wht they call common databases:
+https://www.codejava.net/java-se/jdbc/jdbc-driver-library-download
