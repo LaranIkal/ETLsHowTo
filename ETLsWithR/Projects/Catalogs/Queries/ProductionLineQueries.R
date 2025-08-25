@@ -1,6 +1,6 @@
 #*******************************************************************************
 #* ProductionLineQuery.R
-#* Operation type, operation and line catalogs Query For IMI Analytics
+#* Production line catalog
 #* Carlos Kassab
 #* 2019-Jan-29
 #*******************************************************************************

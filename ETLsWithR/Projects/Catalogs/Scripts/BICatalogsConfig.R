@@ -1,5 +1,5 @@
 #*******************************************************************************
-#* BI_CatalogsConfig.R
+#* BICatalogsConfig.R
 #* Initial Parameters for program BICatalogs.R
 #* Carlos Kassab
 #* 2019-Jan-24

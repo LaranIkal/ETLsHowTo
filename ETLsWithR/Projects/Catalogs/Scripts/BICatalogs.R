@@ -112,7 +112,7 @@ tryCatch( {
          , file = logFileName, append = TRUE )
   # Send email alert to admins
   SendEmail( emailRecipients, paste( "Error with process run number:", processRunNumber )
-             , "<p><strong>Error opening target database connection, check text file logs for details.</strong></p>", exceptionError )  
+             , paste("<p><strong>Error opening target database connection, check text file logs for details.</strong></p>", exceptionError) )  
   q( save = "no" )
 } )
 
@@ -133,12 +133,12 @@ tryCatch( {
   ### Opening Data Source Connection Error.
   WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 100, 3, 3001, exceptionError )
   
-  # Problems with the data source, stop process.
+  # Problems with the data source, stop ETL process.
   WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 0, 3, 3001, exceptionError )
   
   # Alert admins
   SendEmail( emailRecipients, paste( "Error with process run number:", processRunNumber )
-             , "<p><strong>Data Source Connection Error.</strong></p><p>", exceptionError, "</p>" )
+             , paste("<p><strong>Data Source Connection Error.</strong></p><p>", exceptionError, "</p>") )
   
   q( save = "no" )
 } )
