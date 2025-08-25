@@ -8,3 +8,6 @@ These ETLs work well, they are fast and eficient.
 EplSite is an ETL Perl development with web interface: 
 https://github.com/LaranIkal/EplSite
 
+The last ETLs are the ETLsWithJavaScript, these scripts are using Java JDBC libraries for all the database connections, file log writings, etc.
+I am doing this using my project: https://github.com/LaranIkal/jss
+jss(JavaScript Shell) project is using GRAALVM:  https://www.graalvm.org/
