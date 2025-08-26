@@ -11,3 +11,6 @@ https://github.com/LaranIkal/EplSite
 The last ETLs are the ETLsWithJavaScript, these scripts are using Java JDBC libraries for all the database connections, file log writings, etc.
 I am doing this using my project: https://github.com/LaranIkal/jss
 jss(JavaScript Shell) project is using GRAALVM:  https://www.graalvm.org/
+
+NOTE. You can include all your Java libraries(such as JDBC drivers) in your jss pom.xml file and package them together. This way you won't need to have all your JARs inside a jarlib directory.
+
