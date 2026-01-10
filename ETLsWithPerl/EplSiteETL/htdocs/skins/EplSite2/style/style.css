@@ -1,0 +1,251 @@
+@charset "ISO-8859-1";
+FONT		{FONT-FAMILY: Verdana,Helvetica, Sans Serif; FONT-SIZE: 11px}
+TD		{FONT-FAMILY: Verdana,Helvetica, Sans Serif; FONT-SIZE: 11px}
+BODY		{FONT-FAMILY: Verdana,Helvetica, Sans Serif; FONT-SIZE: 12px}
+P		{FONT-FAMILY: Verdana,Helvetica, Sans Serif; FONT-SIZE: 11px}
+DIV		{FONT-FAMILY: Verdana,Helvetica, Sans Serif; FONT-SIZE: 13px}
+INPUT 		{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 11px; BORDER-BOTTOM-WIDTH: 1px; FONT-FAMILY: Verdana,Helvetica; BORDER-RIGHT-WIDTH: 1px}
+TEXTAREA	{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 11px; BORDER-BOTTOM-WIDTH: 1px; FONT-FAMILY: Verdana,Helvetica; BORDER-RIGHT-WIDTH: 1px}
+SELECT 		{BORDER-TOP-COLOR: #000000; BORDER-LEFT-COLOR: #000000; BORDER-RIGHT-COLOR: #000000; BORDER-BOTTOM-COLOR: #000000; BORDER-TOP-WIDTH: 1px; BORDER-LEFT-WIDTH: 1px; FONT-SIZE: 11px; BORDER-BOTTOM-WIDTH: 1px; FONT-FAMILY: Verdana,Helvetica; BORDER-RIGHT-WIDTH: 1px}
+FORM 		{FONT-FAMILY: Verdana,Helvetica, Sans Serif; FONT-SIZE: 11px}
+A:link          {BACKGROUND: none; COLOR: #363636; FONT-SIZE: 11px; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: underline}
+A:active        {BACKGROUND: none; COLOR: #363636; FONT-SIZE: 11px; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: underline}
+A:visited       {BACKGROUND: none; COLOR: #363636; FONT-SIZE: 11px; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: underline}
+A:hover         {BACKGROUND: none; COLOR: #ff0000; FONT-SIZE: 11px; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: underline}
+.title 		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 14px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: none}
+.content 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 11px; FONT-FAMILY: Verdana, Helvetica, Sans Serif}
+.contentb 	{BACKGROUND: #CCCCFF; COLOR: #000000; FONT-SIZE: 12px; FONT-FAMILY: Verdana, Helvetica, Sans Serif}
+.block-title	{BACKGROUND: none; COLOR: #FFFFFF; FONT-SIZE: 11px; FONT-FAMILY: Verdana, Helvetica, Sans Serif}
+.storytitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 12px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: none}
+.storycat	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 11px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: underline}
+.boxtitle 	{BACKGROUND: none; COLOR: #363636; FONT-SIZE: 11px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: none}
+.boxcontent 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 10px; FONT-FAMILY: Verdana, Helvetica, Sans Serif}
+.option 	{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 11px; FONT-WEIGHT: bold; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: none}
+.tiny		{BACKGROUND: none; COLOR: #000000; FONT-SIZE: 8px; FONT-WEIGHT: normal; FONT-FAMILY: Verdana, Helvetica, Sans Serif; TEXT-DECORATION: none}
+
+#nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#nav ul {
+	padding: 0;
+	margin:0;
+	list-style: none;
+	z-index:99;
+	position:relative;
+	overflow:visible;
+}
+
+#nav > li ul {
+	text-align: left;
+}
+#nav li { /* Appearance settings (eye candy) */
+	position: relative;
+	background: #E7E7E7;
+/*	background: url(trans/white80.png);*/
+	color: #00F;
+	border: solid 1px #AAA;
+	height: auto;
+	max-width: 8em;
+	overflow: visible;
+}
+#nav ul ul {
+	width: 8em;
+}
+#nav > li {
+	margin: 0;
+	float: left;
+	text-align: center;
+	height: 1.6em;
+}
+
+
+#nav a {
+	text-decoration: none;
+	padding: 0 0.5em;
+	line-height: 1.6em;
+	background: transparent;
+	color: inherit;
+	overflow: hidden;
+}
+#nav li li a {
+	line-height: normal;
+	padding: 0.25em 0.5em;
+}
+
+#nav ul, #nav li, #nav a{
+	display: block;
+}
+
+
+#nav ul{
+	visibility: hidden;
+}
+
+/* (sub-)submenus */
+#nav ul ul, #nav ul ul ul{
+	position:absolute;
+	top: 0;
+	left: 95%;
+	visibility: hidden;
+}
+
+
+
+/* Shadow! */
+
+#nav li:hover {
+/*	border-style: outset;*/
+	background: #1AD;
+	color: white;
+}
+
+#nav > li > ul {
+	margin: -1px;  /* This is to make the width equal to parent li width. */
+	position: relative;
+	top:  4px;
+	left: 4px;
+}
+#nav > li ul li {
+	position: relative;
+	top:  -4px;
+	left: -4px;
+}
+/* end shadow */
+
+
+/* Enlarger */
+#nav > li {width: 8em;} /* popping disappears if we use a fixed-width */
+#nav > li:hover {
+	margin: -0.2em;
+	padding: 0.2em;
+	z-index: 2;  /* Opera does not seem to respect this. */
+}
+#nav > li:hover > a {
+	margin: -0.2em;
+	padding: 0.2em 0.7em;
+}
+/* end enlarger */
+
+
+/* Interactive lines: show/hide menus */
+#nav li:hover ul ul, #nav li:hover ul ul ul{
+	visibility: hidden;
+}
+
+#nav li:hover ul, #nav ul li:hover ul, #nav ul ul li:hover ul{
+	visibility: visible;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.skipnav {
+	display: none;
+}
+
+#nonav {
+	display: block;
+	background: transparent;
+	height: 1px;
+	border: 0;
+	margin: 0 0 -1px 0;
+	padding: 0;
+}
+
+
+
+table.maintable
+{
+border:1px;
+background-color:#FFB933;
+width: 100%;
+padding: 0px;
+border-collapse:collapse;
+}
+table.maintable1
+{
+border:1px;
+background-color:#F9F9FC;
+width: 100%;
+padding: 1px;
+border-collapse:collapse;
+}
+table.sqlresults
+{
+border:1px solid;
+background-color:#ECECF5;
+padding: 1px;
+border-collapse:collapse;
+}
+th.sqlresults
+{
+border:1px solid black;
+background-color:#3366CC;
+color:white;
+padding: 1px;
+border-collapse:collapse;
+}
+tr.oddsqlresults
+{
+border:1px solid;
+background-color:#D9DEF3;
+padding: 1px;
+}
+tr.evensqlresults
+{
+border:1px solid;
+background-color:#E4E9E9;
+padding: 1px;
+}
+td.oddsqlresults
+{
+border:1px solid;
+background-color:#D9DEF3;
+padding: 1px;
+}
+td.evensqlresults
+{
+border:1px solid;
+background-color:#E4E9E9;
+padding: 1px;
+}
+

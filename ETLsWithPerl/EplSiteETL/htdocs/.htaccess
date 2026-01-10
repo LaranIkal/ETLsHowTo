@@ -1,0 +1,13 @@
+DirectoryIndex index.epl index.prc index.htpl index.htm index.html index.php
+
+<FilesMatch "\.(htpl|prc)$">
+    SetHandler htpl-script
+</FilesMatch>
+AddType text/html .prc
+AddType text/html .htpl
+
+Action htpl-script /cgi-bin/hypertextperl.pl
+
+ErrorDocument 404 "The page you are trying to get does not exists in this site."
+
+AddDefaultCharset ISO-8859-1

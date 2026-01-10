@@ -1,0 +1,16 @@
+[ 2026-Jan-3 19:7:45 ]:syntax error at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/modules/EplSiteETL/ExecQuery.prc line 450, near "my "
+Execution of /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/modules/EplSiteETL/ExecQuery.prc aborted due to compilation errors.
+[ 2026-Jan-4 12:18:15 ]:syntax error at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/admin/modules/eplsiteetl.prc line 2641, near "">":"
+Execution of /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/admin/modules/eplsiteetl.prc aborted due to compilation errors.
+[ 2026-Jan-4 16:4:21 ]:Can't call method "prepare" on an undefined value at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/admin/modules/eplsiteetl.prc line 2171.
+[ 2026-Jan-4 17:8:9 ]:syntax error at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/includes/subs.prc line 432, near ") {"
+Execution of /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/includes/subs.prc aborted due to compilation errors.
+[ 2026-Jan-4 17:8:9 ]:Can't use an undefined value as a subroutine reference at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/modules/EplSiteETL/EplSiteETL_subs.prc line 609.
+[ 2026-Jan-4 17:8:9 ]:syntax error at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/includes/subs.prc line 432, near ") {"
+Execution of /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/includes/subs.prc aborted due to compilation errors.
+[ 2026-Jan-4 17:8:9 ]:Can't use an undefined value as a subroutine reference at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/htdocs/modules/EplSiteETL/EplSiteETL_subs.prc line 609.
+[ 2026-Jan-9 10:1:52 ]:No such class messagesOnScreen at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/BatchProcess/LayoutBatchProcess.ppl line 14, near "my messagesOnScreen"
+syntax error at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/BatchProcess/LayoutBatchProcess.ppl line 14, near "my messagesOnScreen ="
+Execution of /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/BatchProcess/LayoutBatchProcess.ppl aborted due to compilation errors.
+[ 2026-Jan-9 13:56:5 ]:syntax error at /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/BatchProcess/LayoutBatchProcess.ppl line 27, near "exit"
+Execution of /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithPerl/EplSiteETL/BatchProcess/LayoutBatchProcess.ppl aborted due to compilation errors.

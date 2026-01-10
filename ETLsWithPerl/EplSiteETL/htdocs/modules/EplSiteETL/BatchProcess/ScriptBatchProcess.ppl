@@ -1,0 +1,44 @@
+
+if ($#ARGV < 1) 
+{
+	print "usage : hypertextperl.pl BatchProcess.ppl <Layout or Script>";
+	print " <TransformationCode or ScriptID> <ETLSchemeCode> <ETLSchemeID>";
+	print " <DBConnSourceID> <DBConnTargetID> <OutputFilesDirectory>\n";
+	exit;
+}
+
+$LayoutOrScript = $ARGV[1];
+
+$fdat{option} = "extractdata";
+
+if( $LayoutOrScript eq "Layout" )
+{
+	$fdat{TransformationCode} = $ARGV[2];
+}
+
+if( $LayoutOrScript eq "Script" )
+{
+	$fdat{ScriptID} = $ARGV[2];
+}
+
+$fdat{ETLSchemeCode} = $ARGV[3];
+$fdat{ETLSchemeID} = $ARGV[4];
+$fdat{module} = "EplSiteETL";
+$fdat{option} = "extractdata";
+$fdat{scriptoption} = "extractdata";
+$fdat{DBConnSourceID} = $ARGV[5];
+$fdat{DBConnTargetID} = $ARGV[6];
+$globalp->{mfdatadir} = $ARGV[7];
+$fdat{xrefcondition} = "allrecords";
+$fdat{fileheader} = "descriptive";
+$fdat{previewquery} = "No";
+
+$globalp->{loaded_from_index} = 1;
+$ENV{THE_CALLED_DOCUMENT_PATH} = $ENV{MyHomeWorkingDirectory} . '/htdocs/eplsite/';
+$globalp->{eplsite_path} = $ENV{THE_CALLED_DOCUMENT_PATH};
+
+## Aditional variables needed by the script
+$fdat{TransformationCodeFrom} = "001";
+$fdat{TransformationCodeTo} = "ZZZZ";
+
+Execute ($ENV{THE_CALLED_DOCUMENT_PATH} . "index.prc");

@@ -1,0 +1,5 @@
+mid|title|custom_title|active|view|inmenu
+23|Search||1|0|1
+24|Content||1|0|1
+36|EplSiteReports|EplSite Reports|1|0|1
+40|EplSiteETL|EplSite ETL|1|0|1

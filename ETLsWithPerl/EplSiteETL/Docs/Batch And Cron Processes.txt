@@ -1,0 +1,4 @@
+To see samples of batch processes, you can see under folder
+EplSiteETL/BatchProcess
+
+

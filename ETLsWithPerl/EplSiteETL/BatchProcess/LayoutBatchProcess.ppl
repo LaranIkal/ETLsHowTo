@@ -1,0 +1,105 @@
+
+
+our $messagesOnScreen = "No"; # More suitable for cron jobs
+
+#$messagesOnScreen = "Yes"; # "Yes" will print batch process messages on screen, "No" will suppress them
+                           # use it for debugging or running interactively, before setting to "No" for cron jobs
+
+
+## Output to file: Set target database connection($ARGV[6]) to 3333, it will send the data to a pipe delimited file.
+## This is the only option for output to file for now.
+
+## When running a Layout in batch process, it is not needed to change this program, just set the parameters in the shell script
+## that calls this program.
+
+if( $ARGV[1] eq "" || $ARGV[2] eq "" || $ARGV[3] eq "" || $ARGV[4] eq "" || $ARGV[5] eq "" || $ARGV[6] eq "" ) {
+  print "You must specify all parameters:\n"
+        ."usage : hypertextperl.pl BatchProcess.ppl <Layout or Script>"
+        ." <TransformationCode or ScriptID> <ETLSchemeCode> <ETLSchemeID>"
+        ." <DBConnSourceID> <DBConnTargetID> <OutputFilesDirectory>\n";
+  exit;
+}
+
+if( $ARGV[6] eq "3333" ) {
+  if( $messagesOnScreen eq "Yes" ) {
+    print "You are using the special target database connection ID 3333 to output to a pipe delimited file.\n"
+          ."This connection ID is only for output to file purposes.\n";
+  }
+
+  if( $ARGV[7] eq "" ) {
+    print "You must specify the Output Files Directory <OutputFilesDirectory> parameter as the last parameter when using DBConnTargetID 3333.\n";
+    print "<OutputFilesDirectory> must be full path to directory, sample:/home/ckassab/tmp\n";
+    exit;
+  }
+}
+
+
+#Setting Batch Process Parameters
+
+if( $messagesOnScreen eq "Yes" ) {
+  $ENV{EPLSITE_MESSAGES_ON_SCREEN} = "Yes";
+
+  print "Batch Process Parameters Set in hypertextperl.pl:\n"
+        ."\$ENV{MyHomeWorkingDirectory}, Directory Where hypertextperl.pl is Located:\n $ENV{MyHomeWorkingDirectory}\n\n" 
+        ."\$ENV{THE_CALLED_DOCUMENT}, Perlet Path And Name:\n $ENV{THE_CALLED_DOCUMENT}\n";
+}
+
+if( $ARGV[1] ne "Layout" && $ARGV[1] ne "Script" ) {
+  print "You must specify the second parameter as one of the next words:Layout or Script\n";
+  exit;
+} else {  
+  our $LayoutOrScript = $ARGV[1];
+}
+
+# Setting other ETL Batch Process Parameters read from arguments passed.
+if( $messagesOnScreen eq "Yes" ) {
+  print "\nSetting other ETL Batch Process Parameters read from arguments passed.\n";
+  print "Executing a, \$ARGV[1]:$LayoutOrScript\n";
+}
+
+if( $LayoutOrScript eq "Layout" ) {
+	$fdat{TransformationCode} = $ARGV[2]; # Setting Transformation Code since we are executing a Layout Batch Process
+} else {
+  $fdat{ScriptID} = $ARGV[2]; # Setting Script ID since we are executing a Script Batch Process
+}
+
+
+$fdat{ETLSchemeCode} = $ARGV[3]; 
+$fdat{ETLSchemeID} = $ARGV[4];   
+$fdat{DBConnSourceID} = $ARGV[5];
+$fdat{DBConnTargetID} = $ARGV[6];
+$globalp->{mfdatadir} = $ARGV[7];
+
+if( $messagesOnScreen eq "Yes" ) {
+  print "\$fdat{TransformationCode} When Processing a Layout, or \$fdat{ScriptID} For Scritps, \$ARGV[2]: $ARGV[2]\n";
+
+  print "\$fdat{ETLSchemeCode}, \$ARGV[3]: $fdat{ETLSchemeCode}\n";
+  print "\$fdat{ETLSchemeID}, \$ARGV[4] : $fdat{ETLSchemeID}\n";
+  print "\$fdat{DBConnSourceID}, \$ARGV[5]: $fdat{DBConnSourceID}\n";
+  print "\$fdat{DBConnTargetID}, \$ARGV[6]: $fdat{DBConnTargetID}\n";
+  print "\$globalp->{mfdatadir}, \$ARGV[7]: $globalp->{mfdatadir}\n";
+}
+
+# Setting ETL Process GENERAL Parameters
+$fdat{module} = "EplSiteETL"; 
+$fdat{option} = "extractdata"; # Setting process option to extract data
+$fdat{scriptoption} = "extractdata"; # Setting script option to extract data
+$fdat{xrefcondition} = "allrecords";
+$fdat{fileheader} = "descriptive"; # Possible values are : "descriptive", "numeric", "both"
+$fdat{previewquery} = "No";
+$globalp->{loaded_from_index} = 1;
+$globalp->{ExitTransformationProcessWhenFinished} = "Yes";
+$ENV{THE_CALLED_DOCUMENT_PATH} = $ENV{MyHomeWorkingDirectory} . '/htdocs/';
+$globalp->{eplsite_path} = $ENV{THE_CALLED_DOCUMENT_PATH};
+
+if( $messagesOnScreen eq "Yes" ) {
+  print "\nDirectory Where the EPLSite Engine Starting Program \"index.prc\" is Located:\n"
+        ."\$ENV{THE_CALLED_DOCUMENT_PATH}:$ENV{THE_CALLED_DOCUMENT_PATH}\n";
+
+  print "\nExecuting ETL Batch Process by calling the EPLSite Engine\n\n";
+}
+
+#exit; # Uncomment this line to test parameter passing without executing the process
+
+Execute ($ENV{THE_CALLED_DOCUMENT_PATH} . "index.prc");
+

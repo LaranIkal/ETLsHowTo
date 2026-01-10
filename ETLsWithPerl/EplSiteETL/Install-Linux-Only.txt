@@ -1,0 +1,48 @@
+
+EplSite ETL Installation using your Linux distribution Perl install.
+
+1.- Uncompress EplSiteETL file to your desired install path, 
+or clone the repository: https://github.com/LaranIkal/ETLsHowTo
+And copy the directory EplsiteETL to a directory where you want to run EplsiteETL, such as /Home/yourusername/Apps
+So you will have /Home/yourusername/Apps/EplsiteETL.
+
+2.- Open terminal under your finel EplsiteETL directory and enter:sudo cpan
+
+3.- Install/Update the next required DBD modules by running:
+install DBD::SQLite
+install DBD::CSV
+install DBD::DuckDB
+
+Optional modules(Depending on your databases):
+install DBD::ODBC
+install DBD::Oracle
+install DBD::Pg
+install DBD::mysql
+install MIME::Base64
+
+Note. If Perl module: MIME::Base64 is installed, it will be updated.
+
+4.- install Plack, install CPAN::DistnameInfo
+5.- install CGI::Compile
+6.- install CGI::Emulate::PSGI
+7.- install Starlet 
+
+8.- Remember to give exec permissions to the next file:
+  hypertextperl.pl --> chmod +x hypertextperl.pl
+  eplsite.sh --> chmod +x eplsite.sh
+  
+*If you are not going to use all the DBD modules mentioned above and you are using Plack(Recommended),
+you must edit eplsite.sh to only preload the DBD modules needed.
+
+9.- Run bash eplsite.sh
+
+2.- Point your browser to: http://localhost:3333/eplsite/index.prc
+
+###*** There are two users:
+Administrator user:admin
+password:eplsite
+
+ETL module user:eplsite
+password:eplsite
+
+

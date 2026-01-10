@@ -1,0 +1,20 @@
+{
+  "name": "scala-cli",
+  "argv": [
+    "/home/ckassab/Apps/scala3-3.7.3-x86_64-pc-linux/bin/scala-cli",
+    "bsp",
+    "--json-options",
+    "/home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithScala/Projects/Catalogs/.scala-build/ide-options-v2.json",
+    "--json-launcher-options",
+    "/home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithScala/Projects/Catalogs/.scala-build/ide-launcher-options.json",
+    "--envs-file",
+    "/home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithScala/Projects/Catalogs/.scala-build/ide-envs.json",
+    "/home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithScala/Projects/Catalogs"
+  ],
+  "version": "1.10.0",
+  "bspVersion": "2.1.1",
+  "languages": [
+    "scala",
+    "java"
+  ]
+}

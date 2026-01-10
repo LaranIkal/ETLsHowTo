@@ -1,0 +1,13 @@
+$globalp->{_PREVIOUS} = "Previous Page";
+$globalp->{_NEXT} = "Next Page";
+$globalp->{_PAGE} = "Page";
+$globalp->{_DEACTIVATE} = "Deactivate";
+$globalp->{_ACTIVATE} = "Activate";
+$globalp->{_PUBLISHEDON} = "Published on";
+$globalp->{_PAGESLIST} = "Pages List";
+$globalp->{_LISTOFCONTENT} = "List of available content in";
+$globalp->{_YOURADMINLIST} = "You're Administrator: following is the list of Inactive pages:";
+$globalp->{_COPYRIGHT} = "Copyright &copy; by $globalp->{sitename}. All Right Reserved.";
+$globalp->{_CONTENTCATEGORIES} = "Available Content Categories";
+$globalp->{_NONCLASSCONT} = "Non Categorized Content";
+$globalp->{_PUBLISHEDBY} = "By";

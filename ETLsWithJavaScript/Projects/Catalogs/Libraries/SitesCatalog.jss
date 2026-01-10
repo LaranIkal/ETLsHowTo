@@ -46,7 +46,7 @@ var DataExtract = function( srcConn, trgtConn, procRunNum, projectID, procNum, g
 
 
 /*******************************************************************************
-* Process data after data was read from source table.
+* Process data after data was read from source DB.
 ********************************************************************************/
 var AfterDataExtract = function( dataExtracted, trgtConn, procRunNum, projectID
                                 , procId, deleteQuery ) {

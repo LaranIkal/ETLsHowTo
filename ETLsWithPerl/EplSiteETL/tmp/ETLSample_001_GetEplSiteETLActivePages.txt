@@ -1,0 +1,15 @@
+Page Type(kindofdata)|Page Title|New Page Title|Page Sub Title|New Page Sub Title|ETL User
+EplSiteETLPages|EplSite ETL Overview|OverView||New_|eplsite
+EplSiteETLPages|EplSite Query Tool|Query Tool||New_|eplsite
+EplSiteETLPages|Import Catalogs For Data Validation|Catalogs||New_|eplsite
+EplSiteETLPages|Source System Menu|XRef Not Found For:Source System Menu||New_|eplsite
+EplSiteETLPages|Migration Validation Reports|XRef Not Found For:Migration Validation Reports||New_|eplsite
+EplSiteETLPages|Cross Reference Files|XRef Files||New_|eplsite
+EplSiteETLPages|Migration Plan Sample Document|XRef Not Found For:Migration Plan Sample Document||New_|eplsite
+EplSiteETLPages|Migration Check List Sample|XRef Not Found For:Migration Check List Sample||New_|eplsite
+EplSiteETLPages|Creating New Export Layouts|New Layouts creation|How to create and maintain new layouts to export data.|New_How to create and maintain new layouts to export data.|eplsite
+EplSiteETLPages|Control Panel|EplSite ETL Control Panel|Migration Framework Control Panel Guide|New_Migration Framework Control Panel Guide|eplsite
+EplSiteETLPages|Migration Diagram And WorkFlow|XRef Not Found For:Migration Diagram And WorkFlow||New_|eplsite
+Categories|Category Description
+EplSiteETLCategories|Pages About EplSite
+EplSiteETLCategories|Here you will find all documentation related to the EplSite ETL

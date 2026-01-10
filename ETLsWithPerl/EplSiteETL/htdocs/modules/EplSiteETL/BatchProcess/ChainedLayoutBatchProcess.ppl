@@ -1,0 +1,51 @@
+
+if ($#ARGV < 1) 
+{
+	print "usage : hypertextperl.pl BatchProcess.ppl <Layout or Script>";
+	print " <TransformationCode or ScriptID> <ETLSchemeCode> <ETLSchemeID>";
+	print " <DBConnSourceID> <DBConnTargetID> <OutputFilesDirectory>\n";
+	exit;
+}
+
+## Use target database connection 3333 to send the data to a pipe delimited file
+## without executing the code in the sections because we are validating the
+## target database connection exists.
+
+$LayoutOrScript = $ARGV[1];
+
+$fdat{option} = "extractdata";
+
+if( $LayoutOrScript eq "Layout" )
+{
+	$fdat{TransformationCode} = $ARGV[2];
+}
+
+if( $LayoutOrScript eq "Script" )
+{
+	$fdat{ScriptID} = $ARGV[2];
+}
+
+$fdat{ETLSchemeCode} = $ARGV[3];
+$fdat{ETLSchemeID} = $ARGV[4];
+$fdat{module} = "EplSiteETL";
+$fdat{option} = "extractdata";
+$fdat{scriptoption} = "extractdata";
+$fdat{DBConnSourceID} = $ARGV[5];
+$fdat{DBConnTargetID} = $ARGV[6];
+$globalp->{mfdatadir} = $ARGV[7];
+$fdat{xrefcondition} = "allrecords";
+$fdat{fileheader} = "descriptive";
+$fdat{previewquery} = "No";
+
+$globalp->{loaded_from_index} = 1;
+$globalp->{ExitTransformationProcessWhenFinished} = "No";
+$ENV{THE_CALLED_DOCUMENT_PATH} = $ENV{MyHomeWorkingDirectory} . '/htdocs/eplsite/';
+$globalp->{eplsite_path} = $ENV{THE_CALLED_DOCUMENT_PATH};
+
+Execute ($ENV{THE_CALLED_DOCUMENT_PATH} . "index.prc");
+
+$fdat{TransformationCode} = "002";
+$globalp->{ExitTransformationProcessWhenFinished} = "Yes";
+Execute ($ENV{THE_CALLED_DOCUMENT_PATH} . "index.prc");
+
+

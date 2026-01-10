@@ -1,0 +1,6 @@
+Log entry at 20251219134407
+Another log entry at 20251219134407
+******************    Opening Target DataBase Connection.   *******************
+*****************  Opening Target DataBase Connection Done.  ******************
+******************    Opening Source DataBase Connection.   *******************
+*****************  Opening Source DataBase Connection Done.  ******************

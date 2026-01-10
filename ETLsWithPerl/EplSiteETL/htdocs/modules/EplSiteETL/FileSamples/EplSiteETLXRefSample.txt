@@ -1,0 +1,7 @@
+PageTitleXRef|PageTitle|PageTitleNew
+PageTitleXRef|EplSite ETL Overview|OverView
+PageTitleXRef|EplSite Query Tool|Query Tool
+PageTitleXRef|Import Catalogs For Data Validation|Catalogs
+PageTitleXRef|Cross Reference Files|XRef Files
+PageTitleXRef|Creating New Export Layouts|New Layouts creation
+PageTitleXRef|Control Panel|EplSite ETL Control Panel

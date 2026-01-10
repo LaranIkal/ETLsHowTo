@@ -46,7 +46,7 @@ if( parameters.length > 1 ) { // Get parameter values if they exists
 const logFileDateValue = GetNumericDateTime()
 const logFileName = config.logsFolder + logFileDateValue + ".txt"
 const eightyStars = "********************************************************************************\n"
-var errorsInETL = false // Flag to send Email alert to admins in case of ETL error
+var errorsInETL = false // ETL status Flag
 
 //################################################################################
 // Opening DataBase Connections.
@@ -87,7 +87,7 @@ try {
   WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 0, 3, 3001, exceptionError )  
   
   // Send email alert to admins
-  SendEmail( config.emailRecipients, "Error with process run number:" + processRunNumber,
+  SendEmail( config.emailRecipients, "Source DB Conn Error, process run number:" + processRunNumber,
              "<p><strong>Data Source Connection Error.</strong></p><p>" + error )    
 }
 
@@ -163,7 +163,7 @@ for (let procSeq = 0; procSeq < procSequences.length; procSeq++) {
 ********************************************************************************/
 
 // Send alert to admins about the ETL process status
-if( errorsInETL === true ){
+if( errorsInETL === true ) {
   WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 0, 0, 3, 0, 'Error Ending ETL Process.' )  
   SendEmail( config.emailRecipients, "Catalogs ETL Error with process run number:" + processRunNumber,
              "<p><strong>Catalogs ETL process finished with errors, check logs.</strong></p>" )
@@ -188,7 +188,7 @@ try {
 try {
   targetDBConn.close()
 } catch (error) {
-  WriteToTextFile("**************** Error Opening Target DataBase Connection. ******************\n" + error + "\n", logFileName)
+  WriteToTextFile("**************** Error Clossing Target DataBase Connection. ******************\n" + error + "\n", logFileName)
 }
 
 

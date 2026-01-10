@@ -1,0 +1,18 @@
+sqlite sql commands:
+
+ANALYZE -- optimize database.
+
+pragma table_info('GENERAL_DATA') -- get information about a table.
+
+SELECT * FROM sqlite_master -- get information about all tables.
+
+If you delete a lot of data and want to shrink the database file, 
+run the VACUUM command. 
+VACUUM will reconstruct the database from scratch. 
+This will leave the database with an empty free-list 
+and a file that is minimal in size. 
+Note, however, that the VACUUM can take some time 
+to run (around a half second per megabyte on the Linux box 
+where SQLite is developed) and it can use up to twice 
+as much temporary disk space as the original file while it is running. 
+

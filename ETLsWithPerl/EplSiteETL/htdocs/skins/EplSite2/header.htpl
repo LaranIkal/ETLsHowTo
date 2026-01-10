@@ -1,0 +1,82 @@
+<body bgcolor="<%=$globalp->{bodybgcolor}%>" text="#000000" link="#363636" vlink="#363636" alink="#d5ae83">
+<table cellpadding="0" cellspacing="0" width="100%" border="0" align="center" bgcolor="#ffffff">
+		<TR>
+			<td bgcolor="#3323ff">
+					<P ALIGN=left><a href="http://eplsite-etl.blogspot.com/" target="_blank"><IMG SRC="skins/EplSite2/images/logo.gif" NAME="Imagen1" ALIGN=MIDDLE BORDER=0></a></P>
+			</td>
+			<td bgcolor="#3323ff">
+		      <P ALIGN=center> <br><font color=white><big><H3><%=$globalp->{_HTITLE}%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</H3></big></font></p>
+			</td>
+ 		    <td bgcolor="#3323ff">
+		       <P ALIGN=CENTER>&nbsp;</P>
+			</td>
+			<td bgcolor="#3323ff">
+			<table align="right" border="0">
+		       <tr><td><font color=white><b>Extract Transform Load</b></font></td></tr>
+			   <tr align="center"><td align="center"><a href="http://savethearctic.org/" target=_blank><IMG SRC="images/icefox_white.png" NAME="Imagen1" ALIGN="center" BORDER=0></a></td></tr>
+			   <tr><td><font color=white><b>And Reporting Tool</b></font></td></tr>
+			   </table>
+			</td>
+	  </tr>
+</table>
+
+
+<table cellpadding="0" cellspacing="0" width="100%" border="0" align="center" bgcolor="#FFFFFF">
+<tr bgcolor="#FFF5E0">
+<th align="left">
+
+<%
+$content ='		<ul id="nav"> '."\n";
+$content .='			<li><a href="index.prc" title="'.$globalp->{_HOME}.'">'.$globalp->{_HOME}.'</a></li>'."\n";
+$content .='			<li><a href="">Modules List</a>'."\n";
+$content .='				<ul> '."\n";
+
+$SelectQuery = "SELECT title, custom_title FROM ".$globalp->{table_prefix}."_modules\n";
+$SelectQuery .= " WHERE active='1' and inmenu='1' ORDER BY mid ASC";
+
+$sth2 = $globalp->{dbh}->prepare ($SelectQuery)  
+or die "Cannot SELECT from ".$globalp->{table_prefix}."_modules";
+$sth2 -> execute  or die "Cannot execute SELECT from ".$globalp->{table_prefix}."_modules";
+$sth2 -> bind_columns(undef,\$m_title, \$custom_title);
+
+    while ($dat2 = $sth2 -> fetchrow_arrayref) 
+    {
+        $m_title2 = $m_title;
+        $m_title2 =~ s/_/ /g;
+
+        if( $custom_title ne "" ) 
+        {
+            $m_title2 = $custom_title;
+        }
+
+        if( $m_title ne $globalp->{main_module} ) 
+        {
+						$content .='					<li><a href="index.prc?module='.$m_title.'">'.$m_title2.'</a></li> '."\n";
+        }
+    }
+    $sth2->finish();
+	
+$content .='				</ul> '."\n";
+$content .='			</li>'."\n";
+$content .='		</ul>'."\n";	
+
+echo($content);
+
+%>	   
+</th></tr></table>
+<!-- END OF TITLE -->
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+	<tr valign="top">
+		<td>
+		<img src="skins/EplSite2/images/pixel.gif" width="1" height="20" border="0" alt="">
+		</td>
+	</tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0" border="0" align="center">
+	<tr valign="top">
+		<td>
+			<img src="skins/EplSite2/images/pixel.gif" width="10" height="1" border="0" alt="">
+		</td>
+		<td width="150" valign="top">
+<!-- END OF HEADER -->
