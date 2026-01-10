@@ -5,7 +5,7 @@ The reason of doing this:
 Many companies ask me if I know Informatica or SSIS, I tell them, I have been creating ETLs for more than 9 years now using programing languages like Scala, Perl, R, PowerShell and JavaScript.
 These ETLs work well, they are fast and eficient. 
 
-ETLsWithPerl are using EplSite, it is Perl development with web interface: 
+ETLsWithPerl are using EplSite, it is Perl development with web interface, and you can run your ETL definitions in batch mode, using a bash script.
 
 ETLsWithScala are using scala-cli, this still in development, in a future it will include the way to generate a jar file with the ETL process.
 
