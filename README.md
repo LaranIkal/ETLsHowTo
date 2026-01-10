@@ -2,13 +2,14 @@
 There are different ways to create ETLs, here I am showing different ways by using different programming languages.
 
 The reason of doing this: 
-Many companies ask me if I know Informatica or SSIS, I tell them, I have been creating ETLs for more than 9 years now using programing languages like Perl, R, PowerShell and JavaScript.
+Many companies ask me if I know Informatica or SSIS, I tell them, I have been creating ETLs for more than 9 years now using programing languages like Scala, Perl, R, PowerShell and JavaScript.
 These ETLs work well, they are fast and eficient. 
 
-EplSite is an ETL Perl development with web interface: 
-https://github.com/LaranIkal/EplSite
+ETLsWithPerl are using EplSite, it is Perl development with web interface: 
 
-The last ETLs are the ETLsWithJavaScript, these scripts are using Java JDBC libraries for all the database connections, file log writings, etc.
+ETLsWithScala are using scala-cli, this still in development, in a future it will include the way to generate a jar file with the ETL process.
+
+ETLsWithJavaScript, these scripts are using Java JDBC libraries for all the database connections, file log writings, etc.
 I am doing this using my project: https://github.com/LaranIkal/jss
 jss(JavaScript Shell) project is using GRAALVM:  https://www.graalvm.org/
 
