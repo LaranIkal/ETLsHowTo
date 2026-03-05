@@ -1,4 +1,69 @@
-.Rproj.user
+
+# ===>>> General files <<<===
+
+.directory
+*.class
+bash
+
+# ===>>> ETL Monitoring System files <<<===
+.~lock.*
+
+# ===>>> VS Code files for those working on multiple tools <<<===
+
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+
+# ===>>> R files <<<===
+
+# R Environment Variables
+.Renviron
+
+# History files
 .Rhistory
+.Rapp.history
+
+# Session Data files
 .RData
+.RDataTmp
+
+# User-specific files
 .Ruserdata
+
+# RStudio files
+.Rproj.user/
+
+
+
+# ===>>> Scala files <<<===
+
+# scala-cli, metals
+.bsp/
+.metals/
+.scala-build/
+
+
+# intellij idea
+*.log
+*.iml
+*.ipr
+*.iws
+.idea
+
+
+# other?
+.history
+.scala_dependencies
+.cache-main
+
+
+
+
+
+
+
+

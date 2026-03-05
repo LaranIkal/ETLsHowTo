@@ -8,7 +8,6 @@
 
 load('BICatalogsConfig.jss') // Loading ETL script configuration file
 load('../../../GeneralLibraries/ETL_GeneralLibs.jss') // Loading the collection of libraries used by all ETL scripts
-load('../Queries/SitesQueries.jss')
 
 var date = Date()
 print(date)
@@ -63,8 +62,10 @@ try {
 } catch (error) {
   WriteToTextFile("**************** Error Opening Target DataBase Connection. ******************\n" + error + "\n", logFileName)
   // Send email alert to admins
-  SendEmail( config.emailRecipients, "Error with process run number:" + processRunNumber,
+  if ( config.sendEmails === true ) {
+    SendEmail( config.emailRecipients, "Error with process run number:" + processRunNumber,
              "<p><strong>Error opening target database connection, check text file logs for details.</strong></p>" + error )    
+  }
 }
 
 
@@ -87,8 +88,10 @@ try {
   WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 0, 3, 3001, exceptionError )  
   
   // Send email alert to admins
-  SendEmail( config.emailRecipients, "Source DB Conn Error, process run number:" + processRunNumber,
-             "<p><strong>Data Source Connection Error.</strong></p><p>" + error )    
+  if ( config.sendEmails === true ) {
+    SendEmail( config.emailRecipients, "Source DB Conn Error, process run number:" + processRunNumber,
+             "<p><strong>Data Source Connection Error.</strong></p><p>" + error )
+  }
 }
 
 
@@ -112,6 +115,7 @@ for (let procSeq = 0; procSeq < procSequences.length; procSeq++) {
       WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 200, 206, 1, 0, '' )
       if( MainProcess( sourceDBConn, targetDBConn, processRunNumber, config.projectCode, 200 ) ) {
         WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 200, 206, 2, 0, '' )
+        WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 200, 0, 2, 0, '' )
       } else {
         WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 200, 206, 3, 3002, '' ) // Error.
         errorsInETL = true
@@ -142,6 +146,7 @@ for (let procSeq = 0; procSeq < procSequences.length; procSeq++) {
       WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 300, 306, 1, 0, '' )
       if( MainProcess( sourceDBConn, targetDBConn, processRunNumber, config.projectCode, 300 ) ) {
         WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 300, 306, 2, 0, '' )
+        WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 300, 0, 2, 0, '' )
       } else {
         WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 300, 306, 3, 300, 'Process Error, Check Logs.' ) // Error.
         errorsInETL = true
@@ -164,13 +169,17 @@ for (let procSeq = 0; procSeq < procSequences.length; procSeq++) {
 
 // Send alert to admins about the ETL process status
 if( errorsInETL === true ) {
-  WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 0, 0, 3, 0, 'Error Ending ETL Process.' )  
-  SendEmail( config.emailRecipients, "Catalogs ETL Error with process run number:" + processRunNumber,
+  WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 0, 0, 3, 0, 'Error Ending ETL Process.' )
+  if ( config.sendEmails === true ) {
+    SendEmail( config.emailRecipients, "Catalogs ETL Error with process run number:" + processRunNumber,
              "<p><strong>Catalogs ETL process finished with errors, check logs.</strong></p>" )
+  }
 } else {
   WriteETLMSLog( targetDBConn, processRunNumber, config.projectCode, 0, 0, 2, 0, 'Successfully Ending ETL Process.' )
-  SendEmail( config.emailRecipients, "Catalogs ETL process done successfully, run number:" + processRunNumber,
-            "<p><strong>Catalogs ETL process done successfully.</strong></p>" )  
+  if ( config.sendEmails === true ) {
+    SendEmail( config.emailRecipients, "Catalogs ETL process done successfully, run number:" + processRunNumber,
+            "<p><strong>Catalogs ETL process done successfully.</strong></p>" )
+  }
 }
 
 

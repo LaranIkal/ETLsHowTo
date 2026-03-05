@@ -1,0 +1,27 @@
+******************       Opening DataBase Connections.      *******************
+******************    Opening Source DataBase Connection.   *******************
+*****************  Opening Source DataBase Connection Done.  ******************
+******************    Opening Target DataBase Connection.   *******************
+*****************  Opening Target DataBase Connection Done.  ******************
+*** Error Writing ETLMS_ProcessesLog, function 'WriteETLMSLog':
+[SQLITE_ERROR] SQL error or missing database (near ")": syntax error)
+Insert Query:
+
+INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
+VALUES (20260301114452, 2, 200, 206, 1, 20260301114452, 0, );
+    
+*** Error Writing ETLMS_ProcessesLog, function 'WriteETLMSLog':
+[SQLITE_ERROR] SQL error or missing database (near ")": syntax error)
+Insert Query:
+
+INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
+VALUES (20260301114452, 2, 200, 210, 1, 20260301114452, 0, );
+    
+*** Error Writing ETLMS_ProcessesLog, function 'WriteETLMSLog':
+[SQLITE_ERROR] SQL error or missing database (near ")": syntax error)
+Insert Query:
+
+INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
+VALUES (20260301114452, 2, 200, 206, 2, 20260301114452, 0, );
+    
+******************       Closing DataBase Connections.       *******************

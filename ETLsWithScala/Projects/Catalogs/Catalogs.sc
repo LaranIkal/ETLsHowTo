@@ -1,7 +1,8 @@
 
 
-// //> using file Libraries // import all from Libraries directory
-//> using file ../../GeneralLibraries // import all common libraries
+//> using file Libraries 
+//> using file Queries
+//> using file ../../GeneralLibraries
 //> using dep "com.sun.mail:jakarta.mail:2.0.2"
 //> using dep "com.sun.activation:jakarta.activation:2.0.1"   
 
@@ -21,15 +22,16 @@ object script {
       parameters.map(_.toInt).toList
     }
 
-    val catalogsConfig = Utils.LoadConfig("Catalogs.config")
+    val catalogsConfig =  Utils.LoadConfig("Catalogs.config")
     val etlConfig = Utils.LoadConfig("../../GeneralLibraries/GeneralETL.config")
     val processRunNumber = LocalDateTime.now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
     val logFileName = s"${catalogsConfig("logsFolder")}/$processRunNumber.txt"
     var errorsInETL = false 
 
-    //etlConfig.foreach { case (k, v) => println(s"$k -> $v") } 
-    //println(s"smtp server: ${etlConfig("mailSmtpServer")}")
-    
+    // #### For debug purposes, printing config values. ###
+    // etlConfig.foreach { case (k, v) => println(s"$k -> $v") } 
+    // println(s"smtp server: ${etlConfig("mailSmtpServer")}")
+    println(s"Target DataBase Path:${catalogsConfig("targetDBPath")}")
     //################################################################################
     // Opening DataBase Connections.
     //################################################################################
@@ -67,52 +69,52 @@ object script {
     /*******************************************************************************
     # Start processing ETL process sequences
     ********************************************************************************/
+    val projectCode = catalogsConfig("projectCode").toInt
+    Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 0, 0, 1, 0, "Catalogs ETL Process Start.", logFileName )
+
     for (procSeq <- procSequences) {
-      val projectCode = catalogsConfig("projectCode").toInt
+
       if( procSeq == 99 || procSeq == 200 ) {
-          // Read Data And Store it in Target DataBase - Start.
-          Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 0, 1, 0, "", logFileName )    
-          try {
-            Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 205, 1, 0, "", logFileName )
-            //> using file Libraries/SitesCatalog.cs // Import ETL Library For Catalog.
-            Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 205, 2, 0, "", logFileName )
+        // Read Sites Catalogs Data And Store it in Target DataBase
+        val procSequence = 200 // Process Number to be Executed
 
-            // Read Data And Store it in Target DataBase
-            Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 206, 1, 0, "", logFileName )
-            //SitesCatalog.MainProcess( sourceDBConn, targetDBConn, processRunNumber, projectCode, 200, logFileName, Utils ) 
-            //val WriteETLMSLog = Utils.WriteETLMSLog(targetDBConn, processRunNumber, projectCode, 200, 206, 1, 0, "", logFileName )
-            val writeETLMSLog = Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, _: Int, _: Int, _: Int, _: String, logFileName )
-            //val writeCatLog = writeETLMSLog( _: Int, _: Int, _: Int, _: String )
-            //SitesCatalog.MainProcess( sourceDBConn, targetDBConn, processRunNumber, projectCode, 200, logFileName, writeCatLog )
-            SitesCatalog.MainProcess( sourceDBConn, targetDBConn, processRunNumber, projectCode, 200, logFileName, writeETLMSLog( _: Int, _: Int, _: Int, _: String ) )
-            Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 206, 2, 0, "", logFileName)
-           /* if( SitesCatalog.MainProcess( sourceDBConn, targetDBConn, processRunNumber, projectCode, 200, logFileName, WriteETLMSLog ) ) {
-              
-              //Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 206, 2, 0, "" )
-            } else {
-              //Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 206, 3, 3002, "" ) // Error.
-              errorsInETL = true
-            }     */ 
-          } catch {
-            case error: Exception => {
-              // Catalog Library Cannot be Imported.
-              Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 205, 3, 3002, error.getMessage(), logFileName )
+        // For short method calling, Initializing writeETLMSLog with Utils.WriteETLMSLog constant values on this proc sequence.
+        val writeETLMSLog = Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, procSequence, _: Int, _: Int, _: Int, _: String, logFileName )
+            // Variable values for writeETLMSLog(subProcNum, statusCode, errorCode, notes )
+            // subProcNum: Process sequence inside our main procSequence(200 in this case), 0 -> subProcNum when Starting procSequence(200 in this case) 
+                // subPRocNum should be a valida value in table -> ETLMS_Processes(Target DB)
+            // statusCode:(1 = Starting, 2 = Done, 3 = Error)
+            // errorCode: Internal error code number in SQLite(Target DB) table -> ETLMS_ErrorCodes 0 -> no error, just initializing 
+            // notes: It can be the error exception from the program: "Error reading sites catalog:" + errorException  
+        try {
+          // 206 = Read Data And Store it in Target DataBase
+          writeETLMSLog(206, 1, 0, "Starting Process to Import Sites Catalogs.") // Starting subProcNum 206, statusCode = 1(Starting),  errorCode = 0, notes = ""
+          if( SitesCatalog.MainProcess( sourceDBConn, targetDBConn, processRunNumber, projectCode, 200, logFileName, writeETLMSLog( _: Int, _: Int, _: Int, _: String ) )  ) {
+            writeETLMSLog(206, 2, 0, "Process to Import Sites Catalogs Done.")
+          } else {
+            writeETLMSLog(206, 3, 3002, "") // Errors in ETL
+          }
 
-              // Cannot Read Data And Store it in Target DataBase.
-              Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 200, 0, 3, 3003, s"ETL Library For Catalog Cannot be Imported: ${error.getMessage()}", logFileName )
-              errorsInETL = true
-            }
-          } 
-        } //if( procSeq == 99 || procSeq == 200 ) {
+        } catch {
+          case error: Exception => {
+            // Cannot Read Data And Store it in Target DataBase.
+            writeETLMSLog(206, 3, 3003, s"Exception when running ETL Library For Sites Catalogs: ${error.getMessage()}")
+            errorsInETL = true
+          }
+        } 
+      } //if( procSeq == 99 || procSeq == 200 ) {
 
-
-
-      println(s"Process Sequence to run: $procSeq")
     }
 
+    Utils.WriteETLMSLog( targetDBConn, processRunNumber, projectCode, 0, 0, 2, 0, "Catalogs ETL Process End.", logFileName )
 
+    if(catalogsConfig("sendEmails").toBoolean) {
+      println("The process is sending emails.")
+    } else {
+      println("The process is NOT sending emails.")
+    }
 
-
+    println(s"Is the process sending emails?:${catalogsConfig("sendEmails")}")
 
 
 

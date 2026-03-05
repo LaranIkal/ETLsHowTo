@@ -1,0 +1,6 @@
+******************       Opening DataBase Connections.      *******************
+******************    Opening Source DataBase Connection.   *******************
+*****************  Opening Source DataBase Connection Done.  ******************
+******************    Opening Target DataBase Connection.   *******************
+*****************  Opening Target DataBase Connection Done.  ******************
+******************       Closing DataBase Connections.       *******************

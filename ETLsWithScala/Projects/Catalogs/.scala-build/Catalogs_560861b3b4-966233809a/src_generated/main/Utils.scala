@@ -7,7 +7,8 @@ def scriptPath = """Utils.sc"""
 
 import java.io.{File, FileWriter}
 import java.sql.Connection
-
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /*******************************************************************************
 * Title: Method to write text to file.
@@ -121,46 +122,56 @@ def SendEmail( mailRecipients: String, mailSubject: String, mailBody: String, et
 * Method to write a log record in ETLMS(ETL Monitoring System) processes log table.
 * Author: Carlos Kassab - 2025-December-22
 ********************************************************************************/
-def WriteETLMSLog( dbConn: Connection, runNumber:String, projectID: Int, procNumber: Int, subProcNum: Int, statusCode: Int, errorCode: Int, notes: String   ): Unit = {
+def WriteETLMSLog( dbConn: Connection, runNumber:String, projectID: Int, procNumber: Int, subProcNum: Int,
+                   statusCode: Int, errorCode: Int, notes: String, logFileName: String ): Unit = {
 
-  import java.sql.{Connection, DriverManager, PreparedStatement}
+  val statement = dbConn.createStatement()
+  val eventDateTime = LocalDateTime.now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+  val insertQuery =
+    s"""
+      |INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
+      |VALUES (${runNumber}, ${projectID}, ${procNumber}, ${subProcNum}, ${statusCode}, ${eventDateTime}, ${errorCode}, ${notes});
+    """.stripMargin // Using pipeline operator to remove leading spaces
 
-  var connection: Connection = null
-  var preparedStatement: PreparedStatement = null
-
-/*
   try {
-    // Establish database connection
-    connection = DriverManager.getConnection(
-      etlConfig("etlmsDbUrl"),
-      etlConfig("etlmsDbUser"),
-      etlConfig("etlmsDbPassword")
-    )
-
-    // Prepare SQL insert statement
-    val insertSQL =
-      """
-        |INSERT INTO etl_process_logs (process_name, log_message, log_level, log_timestamp)
-        |VALUES (?, ?, ?, CURRENT_TIMESTAMP)
-      """.stripMargin
-
-    preparedStatement = connection.prepareStatement(insertSQL)
-    preparedStatement.setString(1, etlProcessName)
-    preparedStatement.setString(2, logMessage)
-    preparedStatement.setString(3, logLevel)
-
-    // Execute insert
-    preparedStatement.executeUpdate()
-
+    statement.executeUpdate(insertQuery)
+    statement.close()
   } catch {
-    case e: Exception => e.printStackTrace()
-  } finally {
-    // Close resources
-    if (preparedStatement != null) preparedStatement.close()
-    if (connection != null) connection.close()
+    case e: Exception => { 
+      WriteToTextFile("*** Error Writing ETLMS_ProcessesLog, function 'WriteETLMSLog':\n" + e.getMessage + "\n", logFileName)
+      WriteToTextFile(s"Insert Query:\n${insertQuery}\n", logFileName)
+    }
   }
-  */
 } 
+
+
+
+/*******************************************************************************
+#  Closing DataBase Connections
+********************************************************************************/
+def CloseDBConnections( sourceConn: Connection, targetConn:Connection,  logFileName: String ): Unit = {
+  WriteToTextFile("******************       Closing DataBase Connections.       *******************\n", logFileName)
+  try {
+    if ( sourceConn != null && !sourceConn.isClosed() ) {
+      sourceConn.close()
+    }
+  } catch {
+    case e: Exception => {
+      Utils.WriteToTextFile("**************** Error Closing Source DataBase Connection. ******************\n" + e.getMessage + "\n", logFileName)
+    }
+  }
+
+  try {
+    if ( targetConn != null && !targetConn.isClosed() ) {
+      targetConn.close()
+    }
+  } catch {
+    case e: Exception => {
+      Utils.WriteToTextFile("**************** Error Closing Target DataBase Connection. ******************\n" + e.getMessage + "\n", logFileName)
+    }
+  }
+}
+
 
 
 /*</script>*/ /*<generated>*//*</generated>*/

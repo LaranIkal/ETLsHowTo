@@ -6,7 +6,7 @@ def scriptPath = """DataBaseConnections.sc"""
 /*<script>*/
 
 
-//> using dep org.xerial:sqlite-jdbc:3.51.1.0
+//> using dep org.xerial:sqlite-jdbc:3.51.2.0
 //> using dep com.h2database:h2:2.4.240
 
 
@@ -38,6 +38,7 @@ def sqliteDBConn(sqliteDBPath: String): Connection = {
 }
 
 
+
 def h2DBConn(h2DBPath: String, h2DBuser: String, h2DBpassword: String): Connection = {
   import org.h2.Driver  // Besides the "using" directive, we need to indicate this import here
                         // for the H2 JDBC driver
@@ -64,15 +65,6 @@ def h2DBConn(h2DBPath: String, h2DBuser: String, h2DBpassword: String): Connecti
 
 
 
-def closeDBConn( conn: Connection ): Unit = {
-  try {
-    if ( conn != null && !conn.isClosed() ) {
-      conn.close()
-    }
-  } catch {
-    case e: Exception => throw new Exception(s"Error closing DB connection: ${e.getMessage}")
-  }
-}
 
 
 /*</script>*/ /*<generated>*//*</generated>*/

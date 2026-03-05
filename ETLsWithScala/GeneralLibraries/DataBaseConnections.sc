@@ -1,6 +1,6 @@
 
 
-//> using dep org.xerial:sqlite-jdbc:3.51.1.0
+//> using dep org.xerial:sqlite-jdbc:3.51.2.0
 //> using dep com.h2database:h2:2.4.240
 
 
