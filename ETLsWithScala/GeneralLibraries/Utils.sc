@@ -122,13 +122,13 @@ def WriteETLMSLog( dbConn: Connection, runNumber:String, projectID: Int, procNum
   val statement = dbConn.createStatement()
   val eventDateTime = LocalDateTime.now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
 
-  try {
-    val insertQuery =
-      s"""
-        |INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
-        |VALUES (${RunNumber}, ${projectID}, ${procNumber}, ${subProcNum}, ${statusCode}, ${eventDateTime}, ${errorCode}, ${notes});
-      """.stripMargin // Using pipeline operator to remove leading spaces
+  val insertQuery =
+    s"""
+      |INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
+      |VALUES (${runNumber}, ${projectID}, ${procNumber}, ${subProcNum}, ${statusCode}, ${eventDateTime}, ${errorCode}, '${notes}');
+    """.stripMargin // Using pipeline operator to remove leading spaces
 
+  try {
     statement.executeUpdate(insertQuery)
     statement.close()
   } catch {

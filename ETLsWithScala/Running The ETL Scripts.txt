@@ -1,0 +1,54 @@
+
+
+
+
+###~~~ HOW TO RUN THE ETLs WITH SCALA ~~~###
+
+
+1.- Read the readme.txt to install the environment.
+
+2.- To run an ETL sample, open a terminal window inside Projects directory,
+    ensure the shell script related to that project has execution permisions.
+
+  Example: Inside Projects directory:  cd Catalogs
+    * Run ls -l command to check if Catalogs.sh has execution permissions.
+    Run this command: ./Catalogs.sh 
+
+
+###~~~ Using cron for scheduled ETL execution:
+
+Check if cron daemon is running: systemctl status cron
+
+Check logs — view /var/log/syslog or /var/log/cron
+
+
+To create a system-wide cron job that runs daily at 3 AM, edit the system crontab:
+
+sudo nano /etc/crontab   
+
+* File /etc/crontab contains all system wide cron jobs.
+
+Add this line:
+
+
+0 3 * * * root /path/to/your/script.sh   
+
+0 3 * * * = at 3:00 AM every day
+root = runs as root for system wide job, ensures the job runs with full system permissions.
+/path/to/your/etlscript.sh = full path to your script 
+Save and close. The job will run daily at 3 AM. 
+
+Ensure your script is executable:
+sudo chmod +x /path/to/your/etlscript.sh
+
+
+For security reasons, you may want to run ETL cron jobs scripts with a specific user.
+To do this, it is needed to schedule the cron job like this in /etc/crontab file
+0 3 * * * yourETLuser /path/to/your/etlscript.sh
+
+###~~~ Check that inside your etlscript.sh, you set the instruction:
+To run my Catalogs.sh, I have the next command:
+cd /home/ckassab/Development/ETLs/ETLsHowTo/ETLsWithScala/Projects/Catalogs
+
+* You need to set it according your paths.
+
