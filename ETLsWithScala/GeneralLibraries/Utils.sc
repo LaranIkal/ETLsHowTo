@@ -3,36 +3,27 @@ import java.io.{File, FileWriter}
 import java.sql.Connection
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Properties
+
+import jakarta.mail.{Authenticator, Message, PasswordAuthentication, Session, Transport, Address}
+import jakarta.mail.internet.{InternetAddress, MimeMessage}
+
+import scala.io.Source
+import scala.util.Using
+import scala.util.Try
 
 /*******************************************************************************
 * Title: Method to write text to file.
 * Author: Carlos Kassab - 2025-December-20
 ********************************************************************************/
-def WriteToTextFile( textToWrite: String, fileName: String ): Unit = {
+def WriteToTextFile( textToWrite: String, fileName: String ): Unit = 
 
-  try {
-
-    // Set File Name
-    val file = new File( fileName )
-
-    if ( file.exists() ) {
-      //File exists. Appending content...
-      
-      val fileWriter = new FileWriter( file, true )
-      fileWriter.write( textToWrite )
-      fileWriter.close()
-
-    } else {
-      //File does not exist. Creating new file...
-      val fileWriter = new FileWriter( file )
-      fileWriter.write( textToWrite )
-      fileWriter.close()
-    }
-
-  } catch {
+  // FileWriter checks if file exists, if not it creats it, and appends text to file
+  Using(new FileWriter(fileName, true)) { 
+    fileWriter => fileWriter.write(textToWrite)
+  }.recover {
     case e: Exception => e.printStackTrace()
-  } 
-}
+  }
 
 
 
@@ -40,35 +31,22 @@ def WriteToTextFile( textToWrite: String, fileName: String ): Unit = {
 * Method to load config files to a Map variable.
 * Author: Carlos Kassab - 2025-December-20
 ********************************************************************************/
-def LoadConfig( configFileName: String ): Map[String, String] = {
-  import scala.io.Source
-  import scala.collection.mutable.Map
+def LoadConfig(configFileName: String): Map[String, String] =
 
-  val configMap: Map[String, String] = Map()
-
-  val configFile = new java.io.File(configFileName)
-  if (!configFile.exists()) {
-    println(s"Configuration file not found: ${configFile.getAbsolutePath}")
-    sys.exit(1)
-  }
-
-  try {
-    val myConfig = Source.fromFile(configFileName) // open the file
-
-    for ( line <- myConfig.getLines() ) {
-      if(line.trim.nonEmpty && !line.trim.startsWith("//") && !line.trim.startsWith("#")) {
-        val parts = line.split("->", -1).map(_.trim)
-        configMap += ( parts(0) -> parts(1) )
-      }
-    }
-    myConfig.close() // close the file
-
-  } catch {
-    case e: Exception => { println(s"Error reading configuration file: ${e.getMessage}") }
-  }
-
-  return configMap.toMap
-}
+  Using(Source.fromFile(configFileName)) { 
+    myConfig => myConfig.getLines().map(_.trim)
+      .filterNot(line => line.isEmpty || line.startsWith("//") || line.startsWith("#"))
+      .flatMap { 
+        line => line.split("->", 2).map(_.trim) match {
+          case Array(key, value) => Some(key -> value)
+          case _                 => None
+        }
+      }.toMap
+  }.recover {
+    case e: Exception =>
+      println(s"Error reading configuration file: ${e.getMessage}")
+      Map.empty
+  }.getOrElse(Map.empty)
 
 
 
@@ -78,26 +56,25 @@ def LoadConfig( configFileName: String ): Map[String, String] = {
 ********************************************************************************/
 def SendEmail( mailRecipients: String, mailSubject: String, mailBody: String, etlConfig: Map[String, String] ): Unit = {
 
-  import java.util.Properties
-  import jakarta.mail._ //{Authenticator, Message, PasswordAuthentication, Session, Transport}
-  import jakarta.mail.internet.{InternetAddress, MimeMessage}
-
-  try {
+  Try {
     val props = new Properties()
-    props.put("mail.smtp.host", etlConfig("mailSmtpServer"))
+    props.put("mail.smtp.host", etlConfig.getOrElse("mailSmtpServer", ""))
     props.put("mail.smtp.auth", "true")
     props.put("mail.smtp.port", "587")
     props.put("mail.smtp.starttls.enable", "true")
 
     val authenticator = new Authenticator {
       override protected def getPasswordAuthentication: PasswordAuthentication =
-        new PasswordAuthentication(etlConfig("mailSmtpUser"), etlConfig("mailSmtpPassword"))
+        new PasswordAuthentication(
+          etlConfig.getOrElse("mailSmtpUser", ""), 
+          etlConfig.getOrElse("mailSmtpPassword", "")
+        )
     }
 
     val session = Session.getInstance(props, authenticator)
-
     val message = new MimeMessage(session)
-    message.setFrom(new InternetAddress(etlConfig("mailSmtpUser")))
+
+    message.setFrom(new InternetAddress(etlConfig.getOrElse("mailSmtpUser", "")))
     message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(mailRecipients).asInstanceOf[Array[Address]])
     message.setSubject(mailSubject)
     message.setText(mailBody)
@@ -105,7 +82,7 @@ def SendEmail( mailRecipients: String, mailSubject: String, mailBody: String, et
     Transport.send(message) // Send the email
     //println("Email sent successfully.")
 
-  } catch {
+  }.recover {
     case e: Exception => e.printStackTrace()
   }
 }
@@ -119,24 +96,29 @@ def SendEmail( mailRecipients: String, mailSubject: String, mailBody: String, et
 def WriteETLMSLog( dbConn: Connection, runNumber:String, projectID: Int, procNumber: Int, subProcNum: Int,
                    statusCode: Int, errorCode: Int, notes: String, logFileName: String ): Unit = {
 
-  val statement = dbConn.createStatement()
   val eventDateTime = LocalDateTime.now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-
   val insertQuery =
-    s"""
+    """
       |INSERT INTO ETLMS_ProcessesLog (RunNumber, ProjectID, ProcessNumber, SubProcessNumber, StatusCode, Date, ErrorCode, Notes)
-      |VALUES (${runNumber}, ${projectID}, ${procNumber}, ${subProcNum}, ${statusCode}, ${eventDateTime}, ${errorCode}, '${notes}');
-    """.stripMargin // Using pipeline operator to remove leading spaces
+      |VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    """.stripMargin
 
-  try {
-    statement.executeUpdate(insertQuery)
-    statement.close()
-  } catch {
-    case e: Exception => { 
-      WriteToTextFile("*** Error Writing ETLMS_ProcessesLog, function 'WriteETLMSLog':\n" + e.getMessage + "\n", logFileName)
-      WriteToTextFile(s"Insert Query:\n${insertQuery}\n", logFileName)
-    }
+  Using(dbConn.prepareStatement(insertQuery)) { statement =>
+    statement.setString(1, runNumber)
+    statement.setInt   (2, projectID)
+    statement.setInt   (3, procNumber)
+    statement.setInt   (4, subProcNum)
+    statement.setInt   (5, statusCode)
+    statement.setString(6, eventDateTime)
+    statement.setInt   (7, errorCode)
+    statement.setString(8, notes)
+    statement.executeUpdate()
+  }.recover {
+    case e: Exception =>
+      writeToTextFile("*** Error Writing ETLMS_ProcessesLog, function 'writeETLMSLog':\n" + e.getMessage + "\n", logFileName)
+      writeToTextFile(s"Insert Query:\n${insertQuery}\n", logFileName)
   }
+
 } 
 
 
@@ -146,25 +128,27 @@ def WriteETLMSLog( dbConn: Connection, runNumber:String, projectID: Int, procNum
 ********************************************************************************/
 def CloseDBConnections( sourceConn: Connection, targetConn:Connection,  logFileName: String ): Unit = {
   WriteToTextFile("******************       Closing DataBase Connections.       *******************\n", logFileName)
-  try {
-    if ( sourceConn != null && !sourceConn.isClosed() ) {
-      sourceConn.close()
-    }
-  } catch {
-    case e: Exception => {
-      Utils.WriteToTextFile("**************** Error Closing Source DataBase Connection. ******************\n" + e.getMessage + "\n", logFileName)
-    }
-  }
 
-  try {
-    if ( targetConn != null && !targetConn.isClosed() ) {
-      targetConn.close()
+  Try(if( sourceConn != null && !sourceConn.isClosed ) sourceConn.close())
+    .recover {
+      case e: Exception =>
+        WriteToTextFile("**************** Error Closing Source DataBase Connection. ******************\n" + e.getMessage + "\n", logFileName)
     }
-  } catch {
-    case e: Exception => {
-      Utils.WriteToTextFile("**************** Error Closing Target DataBase Connection. ******************\n" + e.getMessage + "\n", logFileName)
+
+  Try(if( targetConn != null && !targetConn.isClosed ) targetConn.close())
+    .recover {
+      case e: Exception =>
+        WriteToTextFile("**************** Error Closing Target DataBase Connection. ******************\n" + e.getMessage + "\n", logFileName)
     }
-  }
 }
+
+
+
+
+
+
+
+
+
 
 

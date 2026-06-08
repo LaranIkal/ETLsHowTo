@@ -1,0 +1,42 @@
+
+
+
+# R Source files
+# ============
+*.Rdata binary
+*.RData binary
+*.rda   binary
+*.rdb   binary
+*.rds   binary
+*.Rd    text
+*.Rdx   binary
+*.Rmd	  text
+*.R  	  text
+*.Rproj text
+*.[Rr]md   linguist-detectable
+
+
+# Perl Source files
+# ============
+*.pl  text diff=perl
+*.pm  text diff=perl
+*.prc text diff=perl
+*.ppl text
+
+
+# Scala Source files
+# ============
+*.sc    text diff=java
+*.scala text diff=java
+
+
+
+# JavaScript Source files
+# ============
+*.js  text
+*.jss
+
+
+# These files are binary and should be left untouched
+*.jar           binary
+
